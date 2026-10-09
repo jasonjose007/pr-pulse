@@ -19,67 +19,44 @@ function timeAgo(dateStr: string): string {
   return `${months}mo ago`;
 }
 
-const stateStyles = {
-  open: {
-    bg: "bg-green-400/15",
-    text: "text-green-400",
-    border: "border-green-400/30",
-    label: "Open",
-    icon: "M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829",
-  },
-  merged: {
-    bg: "bg-purple-400/15",
-    text: "text-purple-400",
-    border: "border-purple-400/30",
-    label: "Merged",
-    icon: "M5 13l4 4L19 7",
-  },
-  closed: {
-    bg: "bg-red-400/15",
-    text: "text-red-400",
-    border: "border-red-400/30",
-    label: "Closed",
-    icon: "M6 18L18 6M6 6l12 12",
-  },
+const stateConfig = {
+  open: { dot: "bg-[#0284C7]", label: "Open" },
+  merged: { dot: "bg-[#8B5CF6]", label: "Merged" },
+  closed: { dot: "bg-[#E11D48]", label: "Closed" },
 };
 
 export default function PRCard({ pr }: PRCardProps) {
-  const style = stateStyles[pr.state];
+  const state = stateConfig[pr.state];
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
-      <div className="flex items-start justify-between gap-3">
+    <div className="bg-white border border-[#DFE1E6] rounded-lg px-4 py-3.5 hover:border-[#6366F1]/30 transition-colors">
+      <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-xs text-gray-500 font-medium">{pr.repo}</span>
-            <span className="text-gray-700">·</span>
-            <span className="text-xs text-gray-500">#{pr.number}</span>
-          </div>
           <a
             href={pr.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white font-medium hover:text-emerald-400 transition-colors text-sm leading-snug"
+            className="text-[#172B4D] font-medium hover:text-[#6366F1] transition-colors text-sm leading-snug"
           >
             {pr.title}
           </a>
-          <div className="flex items-center gap-3 mt-3">
-            <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border ${style.bg} ${style.text} ${style.border}`}>
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d={style.icon} />
-              </svg>
-              {style.label}
+          <div className="flex items-center gap-3 mt-2">
+            <span className="font-mono text-xs text-[#6B778C]">
+              {pr.repo}#{pr.number}
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-xs text-[#6B778C]">
+              <span className={`w-2 h-2 rounded-full ${state.dot}`} />
+              {state.label}
             </span>
             {pr.draft && (
-              <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full">Draft</span>
+              <span className="text-xs text-[#B3BAC5]">Draft</span>
             )}
           </div>
         </div>
         <div className="text-right shrink-0">
-          <span className="text-xs text-gray-500">{timeAgo(pr.createdAt)}</span>
-          <div className="text-xs text-gray-600 mt-1">
-            updated {timeAgo(pr.updatedAt)}
-          </div>
+          <span className="font-mono text-xs text-[#B3BAC5]">
+            {timeAgo(pr.createdAt)}
+          </span>
         </div>
       </div>
     </div>

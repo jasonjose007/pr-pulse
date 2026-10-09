@@ -83,23 +83,30 @@ export default function PRsPage() {
     closed: prs.filter((p) => p.state === "closed").length,
   };
 
+  const stateColors = {
+    all: "",
+    open: "text-[#0284C7]",
+    merged: "text-[#8B5CF6]",
+    closed: "text-[#E11D48]",
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#F4F5F7]">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <main className="max-w-5xl mx-auto px-6 py-10">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white mb-1">
-              My Pull Requests
+            <h1 className="text-xl font-semibold text-[#172B4D] mb-1">
+              My pull requests
             </h1>
-            <p className="text-sm text-gray-400">
-              Your PRs across all watched repos.
+            <p className="text-sm text-[#6B778C]">
+              {filtered.length} PR{filtered.length !== 1 ? "s" : ""} across watched repos
             </p>
           </div>
           <select
             value={filterRepo}
             onChange={(e) => setFilterRepo(e.target.value)}
-            className="bg-gray-800 border border-gray-700 text-gray-300 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="bg-white border border-[#DFE1E6] rounded-md px-3 py-1.5 text-sm text-[#172B4D] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/30 focus:border-[#6366F1]"
           >
             <option value="all">All repos</option>
             {uniqueRepos.map((r) => (
@@ -110,19 +117,19 @@ export default function PRsPage() {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-1 mb-6">
           {(["all", "open", "merged", "closed"] as const).map((state) => (
             <button
               key={state}
               onClick={() => setFilterState(state)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
                 filterState === state
-                  ? "bg-gray-800 text-white"
-                  : "text-gray-500 hover:text-gray-300"
+                  ? `font-medium bg-white border border-[#DFE1E6] ${stateColors[state] || "text-[#172B4D]"}`
+                  : "text-[#6B778C] hover:text-[#172B4D]"
               }`}
             >
               {state.charAt(0).toUpperCase() + state.slice(1)}
-              <span className="ml-1.5 text-xs text-gray-600">
+              <span className="font-mono ml-1.5 text-xs">
                 {statCounts[state]}
               </span>
             </button>
@@ -133,14 +140,14 @@ export default function PRsPage() {
           <LoadingSpinner text="Fetching your PRs..." />
         ) : repos.length === 0 ? (
           <EmptyState
-            icon="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+            icon=""
             title="No repos watched"
-            description="Add repos first, then come back to see your pull requests."
-            action={{ label: "Add Repos", href: "/repos" }}
+            description="Add repos first to see your pull requests."
+            action={{ label: "Add repos", href: "/repos" }}
           />
         ) : filtered.length === 0 ? (
           <EmptyState
-            icon="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            icon=""
             title="No PRs found"
             description={
               filterState !== "all"
@@ -149,16 +156,11 @@ export default function PRsPage() {
             }
           />
         ) : (
-          <>
-            <p className="text-sm text-gray-500 mb-4">
-              {filtered.length} PR{filtered.length !== 1 ? "s" : ""}
-            </p>
-            <div className="space-y-3">
-              {filtered.map((pr) => (
-                <PRCard key={pr.id} pr={pr} />
-              ))}
-            </div>
-          </>
+          <div className="space-y-2">
+            {filtered.map((pr) => (
+              <PRCard key={pr.id} pr={pr} />
+            ))}
+          </div>
         )}
       </main>
     </div>

@@ -19,56 +19,51 @@ function timeAgo(dateStr: string): string {
   return `${months}mo ago`;
 }
 
-const labelColors: Record<string, string> = {
-  "good first issue": "bg-emerald-400/15 text-emerald-400 border-emerald-400/30",
-  "help wanted": "bg-blue-400/15 text-blue-400 border-blue-400/30",
-  bug: "bg-red-400/15 text-red-400 border-red-400/30",
-  enhancement: "bg-purple-400/15 text-purple-400 border-purple-400/30",
-  documentation: "bg-amber-400/15 text-amber-400 border-amber-400/30",
+const labelStyles: Record<string, string> = {
+  "good first issue": "bg-lime-50 text-lime-700 border-lime-200",
+  "help wanted": "bg-sky-50 text-sky-700 border-sky-200",
+  bug: "bg-red-50 text-red-700 border-red-200",
+  enhancement: "bg-violet-50 text-violet-700 border-violet-200",
+  documentation: "bg-amber-50 text-amber-700 border-amber-200",
 };
 
 export default function IssueCard({ issue }: IssueCardProps) {
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
-      <div className="flex items-start justify-between gap-3">
+    <div className="bg-white border border-[#DFE1E6] rounded-lg px-4 py-3.5 hover:border-[#6366F1]/30 transition-colors">
+      <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-xs text-gray-500 font-medium">{issue.repo}</span>
-            <span className="text-gray-700">·</span>
-            <span className="text-xs text-gray-500">#{issue.number}</span>
-          </div>
           <a
             href={issue.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white font-medium hover:text-emerald-400 transition-colors text-sm leading-snug"
+            className="text-[#172B4D] font-medium hover:text-[#6366F1] transition-colors text-sm leading-snug"
           >
             {issue.title}
           </a>
-          <div className="flex flex-wrap items-center gap-2 mt-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2">
+            <span className="font-mono text-xs text-[#6B778C]">
+              {issue.repo}#{issue.number}
+            </span>
             {issue.labels.map((label) => (
               <span
                 key={label}
-                className={`text-xs px-2 py-0.5 rounded-full border ${
-                  labelColors[label] || "bg-gray-800 text-gray-400 border-gray-700"
+                className={`text-[11px] px-1.5 py-0.5 rounded border ${
+                  labelStyles[label] || "bg-gray-50 text-gray-600 border-gray-200"
                 }`}
               >
                 {label}
               </span>
             ))}
+            {issue.comments > 0 && (
+              <span className="text-xs text-[#6B778C]">
+                {issue.comments} comment{issue.comments !== 1 ? "s" : ""}
+              </span>
+            )}
           </div>
         </div>
-        <div className="text-right shrink-0">
-          <span className="text-xs text-gray-500">{timeAgo(issue.createdAt)}</span>
-          {issue.comments > 0 && (
-            <div className="flex items-center gap-1 mt-1.5 justify-end">
-              <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              <span className="text-xs text-gray-500">{issue.comments}</span>
-            </div>
-          )}
-        </div>
+        <span className="font-mono text-xs text-[#B3BAC5] shrink-0 mt-0.5">
+          {timeAgo(issue.createdAt)}
+        </span>
       </div>
     </div>
   );

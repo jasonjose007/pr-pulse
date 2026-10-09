@@ -10,18 +10,15 @@ interface EmptyStateProps {
   };
 }
 
-export default function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+export default function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4">
-      <svg className="w-12 h-12 text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
-      </svg>
-      <h3 className="text-lg font-semibold text-gray-300 mb-1">{title}</h3>
-      <p className="text-sm text-gray-500 text-center max-w-sm">{description}</p>
+    <div className="flex flex-col items-center justify-center py-20 px-4">
+      <h3 className="text-base font-medium text-[#172B4D] mb-1">{title}</h3>
+      <p className="text-sm text-[#6B778C] text-center max-w-xs">{description}</p>
       {action && (
         <a
           href={action.href}
-          className="mt-4 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+          className="mt-4 bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
         >
           {action.label}
         </a>

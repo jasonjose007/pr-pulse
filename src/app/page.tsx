@@ -73,7 +73,7 @@ export default function DashboardPage() {
 
   if (!initialized) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
         <LoadingSpinner text="Initializing..." />
       </div>
     );
@@ -100,73 +100,58 @@ export default function DashboardPage() {
   const recentPRs = prs.slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#F4F5F7]">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <main className="max-w-5xl mx-auto px-6 py-10">
+        <div className="flex items-start justify-between mb-10">
           <div>
-            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              Welcome back,{" "}
-              <span className="text-emerald-400">{username}</span>
-            </p>
+            <h1 className="text-xl font-semibold text-[#172B4D]">
+              Welcome back, <span className="font-mono">{username}</span>
+            </h1>
           </div>
           <button
             onClick={fetchData}
             disabled={loading}
-            className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-50"
+            className="text-sm text-[#6B778C] hover:text-[#172B4D] transition-colors disabled:opacity-50"
           >
-            <svg
-              className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            Refresh
+            {loading ? "Refreshing..." : "Refresh"}
           </button>
         </div>
 
         <StatsGrid stats={stats} loading={loading} />
 
-        <div className="mt-8">
-          <h2 className="text-lg font-semibold text-white mb-4">
-            Recent Pull Requests
+        <div className="mt-12">
+          <h2 className="text-base font-semibold text-[#172B4D] mb-4">
+            Recent pull requests
           </h2>
           {loading ? (
             <LoadingSpinner text="Fetching your PRs..." />
           ) : recentPRs.length === 0 ? (
             <EmptyState
-              icon="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              icon=""
               title="No PRs yet"
               description={
                 repos.length === 0
-                  ? "Start by adding repos to watch, then your PRs will appear here."
+                  ? "Add repos to watch, then your PRs will appear here."
                   : "You haven't opened any PRs in your watched repos yet."
               }
               action={
                 repos.length === 0
-                  ? { label: "Add Repos", href: "/repos" }
+                  ? { label: "Add repos", href: "/repos" }
                   : undefined
               }
             />
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {recentPRs.map((pr) => (
                 <PRCard key={pr.id} pr={pr} />
               ))}
               {prs.length > 5 && (
                 <a
                   href="/prs"
-                  className="block text-center text-sm text-emerald-400 hover:text-emerald-300 py-3 transition-colors"
+                  className="block text-sm text-[#6366F1] hover:text-[#4F46E5] py-2 transition-colors"
                 >
-                  View all {prs.length} PRs →
+                  View all {prs.length} pull requests
                 </a>
               )}
             </div>

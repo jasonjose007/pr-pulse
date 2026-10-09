@@ -49,30 +49,37 @@ export default function ReposPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#F4F5F7]">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-1">Watched Repos</h1>
-          <p className="text-sm text-gray-400">
-            Add GitHub repos to track issues and PRs.
-          </p>
-        </div>
-
-        <div className="mb-8">
-          <AddRepoForm token={token} onAdd={setRepos} />
+      <main className="max-w-5xl mx-auto px-6 py-10">
+        <div className="flex items-end justify-between gap-6 mb-8">
+          <div>
+            <h1 className="text-xl font-semibold text-[#172B4D] mb-1">
+              Watched repos
+            </h1>
+            <p className="text-sm text-[#6B778C]">
+              Add repos to track their issues and your contributions.
+            </p>
+          </div>
+          <div className="w-80 shrink-0">
+            <AddRepoForm token={token} onAdd={setRepos} />
+          </div>
         </div>
 
         {repos.length === 0 ? (
           <EmptyState
-            icon="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+            icon=""
             title="No repos yet"
-            description="Add a GitHub repository above to start tracking issues and PRs."
+            description="Add a repository above to start tracking."
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {repos.map((repo) => (
-              <RepoCard key={repo.fullName} repo={repo} onRemove={handleRemove} />
+              <RepoCard
+                key={repo.fullName}
+                repo={repo}
+                onRemove={handleRemove}
+              />
             ))}
           </div>
         )}

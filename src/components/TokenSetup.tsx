@@ -26,64 +26,66 @@ export default function TokenSetup({ onComplete }: TokenSetupProps) {
       setToken(trimmed);
       onComplete(username);
     } else {
-      setError("Invalid token. Make sure it has 'repo' scope.");
+      setError("Invalid token. Make sure it has repo scope.");
     }
     setLoading(false);
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <svg className="w-16 h-16 text-emerald-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          <h1 className="text-3xl font-bold text-white mb-2">PR Pulse</h1>
-          <p className="text-gray-400">Track your open-source contributions across GitHub repos</p>
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center p-4">
+      <div className="max-w-sm w-full">
+        <div className="mb-8">
+          <h1 className="font-mono text-2xl font-semibold tracking-tight text-[#172B4D] mb-2">
+            pr-pulse
+          </h1>
+          <p className="text-[#6B778C] text-sm leading-relaxed">
+            Track your contributions across the repos you care about.
+            Connect a GitHub token to get started.
+          </p>
         </div>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-2">Connect GitHub</h2>
-          <p className="text-sm text-gray-400 mb-4">
-            Enter a GitHub Personal Access Token with <code className="text-emerald-400 bg-gray-800 px-1.5 py-0.5 rounded text-xs">repo</code> scope.
-            Your token stays in your browser and is only sent to api.github.com.
-          </p>
-
+        <div className="bg-white border border-[#DFE1E6] rounded-lg p-5">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
+              <label className="block text-sm font-medium text-[#172B4D] mb-1.5">
+                Personal access token
+              </label>
               <input
                 type="password"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm"
+                className="w-full font-mono bg-[#F4F5F7] border border-[#DFE1E6] rounded-md px-3 py-2.5 text-[#172B4D] placeholder-[#B3BAC5] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/30 focus:border-[#6366F1] text-sm transition-colors"
                 disabled={loading}
               />
+              <p className="text-xs text-[#6B778C] mt-1.5">
+                Needs <code className="font-mono text-[#172B4D] bg-[#F4F5F7] px-1 py-0.5 rounded text-[11px]">repo</code> scope.
+                Stored in your browser only.
+              </p>
             </div>
             {error && (
-              <p className="text-red-400 text-sm">{error}</p>
+              <p className="text-[#E11D48] text-sm">{error}</p>
             )}
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-gray-700 disabled:text-gray-500 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+              className="w-full bg-[#6366F1] hover:bg-[#4F46E5] disabled:bg-[#DFE1E6] disabled:text-[#6B778C] text-white font-medium py-2.5 rounded-md transition-colors text-sm"
             >
               {loading ? "Verifying..." : "Connect"}
             </button>
           </form>
 
-          <div className="mt-4 pt-4 border-t border-gray-800">
-            <p className="text-xs text-gray-500">
-              Create a token at{" "}
+          <div className="mt-4 pt-4 border-t border-[#DFE1E6]">
+            <p className="text-xs text-[#6B778C]">
+              Create one at{" "}
               <a
                 href="https://github.com/settings/tokens/new"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-400 hover:underline"
+                className="text-[#6366F1] hover:underline"
               >
-                GitHub Settings → Tokens
+                github.com/settings/tokens
               </a>
-              . Select <strong>repo</strong> scope.
             </p>
           </div>
         </div>

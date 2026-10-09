@@ -68,50 +68,37 @@ export default function IssuesPage() {
     filter === "all" ? issues : issues.filter((i) => i.repo === filter);
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#F4F5F7]">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <main className="max-w-5xl mx-auto px-6 py-10">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white mb-1">
-              Good First Issues
+            <h1 className="text-xl font-semibold text-[#172B4D] mb-1">
+              Good first issues
             </h1>
-            <p className="text-sm text-gray-400">
-              Beginner-friendly issues across your watched repos.
+            <p className="text-sm text-[#6B778C]">
+              {filtered.length} issue{filtered.length !== 1 ? "s" : ""} across your watched repos
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="bg-white border border-[#DFE1E6] rounded-md px-3 py-1.5 text-sm text-[#172B4D] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/30 focus:border-[#6366F1]"
             >
-              <option value="all">All repos ({issues.length})</option>
+              <option value="all">All repos</option>
               {repoNames.map((name) => (
                 <option key={name} value={name}>
-                  {name} ({issues.filter((i) => i.repo === name).length})
+                  {name}
                 </option>
               ))}
             </select>
             <button
               onClick={fetchData}
               disabled={loading}
-              className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-lg text-sm transition-colors disabled:opacity-50"
+              className="text-sm text-[#6B778C] hover:text-[#172B4D] transition-colors disabled:opacity-50 px-2"
             >
-              <svg
-                className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-              Refresh
+              {loading ? "Refreshing..." : "Refresh"}
             </button>
           </div>
         </div>
@@ -120,19 +107,19 @@ export default function IssuesPage() {
           <LoadingSpinner text="Fetching issues..." />
         ) : repos.length === 0 ? (
           <EmptyState
-            icon="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            icon=""
             title="No repos watched"
             description="Add repos first, then come back to find issues."
-            action={{ label: "Add Repos", href: "/repos" }}
+            action={{ label: "Add repos", href: "/repos" }}
           />
         ) : filtered.length === 0 ? (
           <EmptyState
-            icon="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            icon=""
             title="No issues found"
-            description="None of your watched repos have open 'good first issue' or 'help wanted' issues right now."
+            description="None of your watched repos have beginner-friendly issues open right now."
           />
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2">
             {filtered.map((issue) => (
               <IssueCard key={issue.id} issue={issue} />
             ))}
