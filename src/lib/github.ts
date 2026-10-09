@@ -165,6 +165,67 @@ export async function fetchUserPRs(
   }
 }
 
+export async function fetchUserRepos(
+  token: string
+): Promise<WatchedRepo[]> {
+  try {
+    const res = await fetch(
+      `${API_BASE}/user/repos?type=all&sort=updated&per_page=100`,
+      { headers: headers(token) }
+    );
+    updateRateLimit(res);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.map(
+      (repo: Record<string, unknown>): WatchedRepo => ({
+        owner: (repo.owner as { login: string }).login,
+        name: repo.name as string,
+        fullName: repo.full_name as string,
+        description: (repo.description as string) || "",
+        stars: repo.stargazers_count as number,
+        language: (repo.language as string) || "Unknown",
+        addedAt: new Date().toISOString(),
+      })
+    );
+  } catch {
+    return [];
+  }
+}
+
+export async function fetchContributedRepos(
+  token: string,
+  username: string
+): Promise<WatchedRepo[]> {
+  try {
+    const res = await fetch(
+      `${API_BASE}/search/issues?q=author:${username}+type:pr+is:merged&sort=updated&order=desc&per_page=50`,
+      { headers: headers(token) }
+    );
+    updateRateLimit(res);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const repoMap = new Map<string, { owner: string; name: string }>();
+    for (const item of data.items || []) {
+      const url = item.repository_url as string;
+      const parts = url.split("/");
+      const owner = parts[parts.length - 2];
+      const name = parts[parts.length - 1];
+      const fullName = `${owner}/${name}`;
+      if (!repoMap.has(fullName)) {
+        repoMap.set(fullName, { owner, name });
+      }
+    }
+    const repos = await Promise.all(
+      Array.from(repoMap.values()).map(({ owner, name }) =>
+        validateRepo(token, owner, name)
+      )
+    );
+    return repos.filter((r): r is WatchedRepo => r !== null);
+  } catch {
+    return [];
+  }
+}
+
 export async function fetchAllIssues(
   token: string,
   repos: WatchedRepo[]
