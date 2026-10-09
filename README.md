@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PR Pulse
+
+A personal GitHub contribution tracker for open-source contributors. Track your PRs, find good first issues, and monitor progress across repos — built for GSoC, OSCI, and Hacktoberfest prep.
+
+## What it does
+
+1. **Connect** — Enter your GitHub Personal Access Token (stored locally, never leaves the browser).
+2. **Watch** — Add repos you want to contribute to.
+3. **Discover** — Browse "good first issue" and "help wanted" issues across all watched repos.
+4. **Track** — See all your PRs with live status (open, merged, closed).
+5. **Dashboard** — Stats at a glance: repos watched, issues available, PRs opened, PRs merged.
+
+## Tech Stack
+
+- **Next.js 16** + TypeScript + Tailwind CSS
+- **GitHub REST API** — client-side, no backend needed
+- **localStorage** — all data stays in your browser
+- **Vercel** — free deployment
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Enter your GitHub PAT with `repo` scope on first visit.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Create a GitHub Token
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Go to [GitHub Settings → Tokens](https://github.com/settings/tokens/new)
+2. Select the **repo** scope
+3. Generate and paste into PR Pulse
 
-## Learn More
+## Deploy to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx vercel
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Or connect the GitHub repo at [vercel.com/new](https://vercel.com/new).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/
+│   ├── page.tsx          # Dashboard
+│   ├── repos/page.tsx    # Repo management
+│   ├── issues/page.tsx   # Good first issues
+│   └── prs/page.tsx      # PR tracking
+├── components/           # UI components
+├── lib/
+│   ├── github.ts         # GitHub API client
+│   ├── storage.ts        # localStorage helpers
+│   └── types.ts          # TypeScript types
+└── hooks/                # React hooks
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Privacy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Your GitHub token is stored in `localStorage` and only sent to `api.github.com`. No server, no database, no analytics.
